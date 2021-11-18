@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  strapi_versett:
+    image: strapi/strapi
+    container_name: strapi_versett
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    networks:
+      - strapi-app-network
+    volumes:
+      - ./app:/srv/app
+    ports:
+      - "1337:1337"
+    depends_on:
+      - postgres_versett
+
+  postgres_versett:
+    image: postgres
+    container_name: postgres_versett
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - strapi-app-network
+    volumes:
+      - strapidata:/var/lib/postgresql/data
+
+networks:
+  strapi-app-network:
+    driver: bridge
+
+volumes:
+  strapidata:
