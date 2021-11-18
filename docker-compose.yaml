@@ -34,11 +34,8 @@ services:
     networks:
       - strapi-app-network
     volumes:
-      - strapidata:/var/lib/postgresql/data
+      - ./data:/var/lib/postgresql/data
 
 networks:
   strapi-app-network:
     driver: bridge
-
-volumes:
-  strapidata:
